@@ -1,0 +1,14 @@
+cmd
+cd Documents\autogate
+
+
+#Core program
+
+python eir_print2.py -i d:\eir_data -t d:\eir_program\eir_lcb1.xlsx -c COM4
+
+
+
+
+#Reprint
+
+python reprint.py -i d:\eir_data -t d:\eir_program\eir_lcb1.xlsx -c COM4

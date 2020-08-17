@@ -1,0 +1,4 @@
+playsound==1.2.2
+redis
+urllib3
+pyautogui
