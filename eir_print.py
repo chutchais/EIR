@@ -253,8 +253,10 @@ def main():
 def print_eir():
 	try:
 		global paper_count
+		file_index = 0
 		for i in range(0,4):
 			eirs = glob.glob(working_dir + '\\*.*')
+			# total_files = len(eirs)-1 #Add on Sep 8,2020 -- to support cycle container
 			if len(eirs)>0:
 				for eir in eirs:
 					target_dir =makeDirectory()
@@ -263,7 +265,8 @@ def print_eir():
 					# head, tail = os.path.split(eirs[0])
 					head, tail = os.path.split(eir)
 					print ('Found EIR file : %s ' % filename)
-					x = eir_print(filename,"",target_dir[0],setting_data,pc_name)
+					x = eir_print(filename,"",target_dir[0],setting_data,pc_name,file_index)
+					file_index = file_index+1
 
 				# 	# Capture Image and do Face Detection
 				# 	# Delete Main and Thumbnail image file.
@@ -280,6 +283,7 @@ def print_eir():
 				# 	# Move file to output folder 
 					target_file = target_dir[0] +'\\' + tail
 					shutil.move(eir,target_file )
+					sleep(1)
 
 
 

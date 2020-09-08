@@ -14,13 +14,14 @@ import redis
 import json
 
 class eir_print:
-	def __init__(self, filename,templatefile,targetDir,setting,printer=''):
+	def __init__(self, filename,templatefile,targetDir,setting,printer='',container_index=0):
 		self.filename = filename
 		self.template_file = templatefile
 		self.targetDir = targetDir
 		self.printer = printer
 		self.setting = setting
 		self.json = ''
+		self.container_index = container_index
 
 	def print(self):
 		try:
@@ -34,13 +35,19 @@ class eir_print:
 			# print(data)
 			import json
 			lpn = data['license']
+
+			lpn = '%s-%s' % (lpn,self.container_index) if self.container_index != 0 else lpn
+			print ('LPN = %s' % lpn)
+
 			ttl =3600
 			db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
 			db.expire(lpn, ttl) #expire in hour
 			db.publish(self.printer.lower(),lpn)
-		except :
 			print ('Print successful!!')
 			return True
+		except :
+			print ('Error on Print')
+			
 
 
 # Comment by Chutchai on Aug 13,2020
