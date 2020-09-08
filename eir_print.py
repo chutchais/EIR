@@ -251,69 +251,71 @@ def main():
 		sleep(1)
 
 def print_eir():
-	global paper_count
+	try:
+		global paper_count
+		for i in range(0,4):
+			eirs = glob.glob(working_dir + '\\*.*')
+			if len(eirs)>0:
+				for eir in eirs:
+					target_dir =makeDirectory()
+					# filename=  eirs[0]
+					filename =  eir
+					# head, tail = os.path.split(eirs[0])
+					head, tail = os.path.split(eir)
+					print ('Found EIR file : %s ' % filename)
+					x = eir_print(filename,"",target_dir[0],setting_data,pc_name)
+
+				# 	# Capture Image and do Face Detection
+				# 	# Delete Main and Thumbnail image file.
+					
+				# 	captured = face_detection()
+				# 	captured.capture(1)
+				# 	# ------------
+
+				# 	# Once face captured then Print EIR
+				# 	# ask_eir()
+					result = x.print()
+					# print(result)
+				# 	# ask_eir()
+				# 	# Move file to output folder 
+					target_file = target_dir[0] +'\\' + tail
+					shutil.move(eir,target_file )
+
+
+
+				# 	paper_count = paper_count + 1
+				# 	print(Fore.GREEN + 'Print count : %s' % paper_count)
+
+				# 	# Count up print-out
+
+				# 	# # -----------------
+					
+				# 	#Upload to Database (Data)
+
+				# 	# result
+				# 	if result :
+				# 		# captured = face_detection()
+				# 		# captured.capture(1)
+				# 		print ('---Start to send data---')
+				# 		r = upload_container('api/gateout/data',x.json)
+				# 		# sys.exit()
+				# 		if r['successful']:
+				# 			upload_image('api/gateout/image',r['container'],r['slug'],'main_image.jpg','thumbnail_image.jpg')
+
+				# # Say receive EIR
+				# ask_eir()
+
+				# # Open Gaet barrier
+				# print('Open gate on port %s' % com_port)
+				# open_gate(com_port)
+				# # # -----------------
+				break
+			else:
+				print ('Not found EIR file : %s' % datetime.now() )
+	except :
+		pass
 	
-	for i in range(0,4):
-		eirs = glob.glob(working_dir + '\\*.*')
-		if len(eirs)>0:
-			for eir in eirs:
-				target_dir =makeDirectory()
-				# filename=  eirs[0]
-				filename =  eir
-				# head, tail = os.path.split(eirs[0])
-				head, tail = os.path.split(eir)
-				print ('Found EIR file : %s ' % filename)
-				x = eir_print(filename,"",target_dir[0],setting_data,pc_name)
-
-			# 	# Capture Image and do Face Detection
-			# 	# Delete Main and Thumbnail image file.
-				
-			# 	captured = face_detection()
-			# 	captured.capture(1)
-			# 	# ------------
-
-			# 	# Once face captured then Print EIR
-			# 	# ask_eir()
-				result = x.print()
-				# print(result)
-			# 	# ask_eir()
-			# 	# Move file to output folder 
-				target_file = target_dir[0] +'\\' + tail
-				shutil.move(eir,target_file )
-
-
-
-			# 	paper_count = paper_count + 1
-			# 	print(Fore.GREEN + 'Print count : %s' % paper_count)
-
-			# 	# Count up print-out
-
-			# 	# # -----------------
-				
-			# 	#Upload to Database (Data)
-
-			# 	# result
-			# 	if result :
-			# 		# captured = face_detection()
-			# 		# captured.capture(1)
-			# 		print ('---Start to send data---')
-			# 		r = upload_container('api/gateout/data',x.json)
-			# 		# sys.exit()
-			# 		if r['successful']:
-			# 			upload_image('api/gateout/image',r['container'],r['slug'],'main_image.jpg','thumbnail_image.jpg')
-
-			# # Say receive EIR
-			# ask_eir()
-
-			# # Open Gaet barrier
-			# print('Open gate on port %s' % com_port)
-			# open_gate(com_port)
-			# # # -----------------
-			break
-		else:
-			print ('Not found EIR file : %s' % datetime.now() )
-
-		sleep(0.5)
+	sleep(0.5)
 
 
 

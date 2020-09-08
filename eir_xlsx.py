@@ -23,22 +23,25 @@ class eir_print:
 		self.json = ''
 
 	def print(self):
+		try:
+			only_filename = os.path.split(self.filename)[1]
+			head,tail = os.path.splitext(self.filename)
+			eir_obj = eir(self.filename,self.printer)
+			data = eir_obj.getInfo()
+			self.json = data
+			print(data)
+			db = redis.StrictRedis('192.168.10.102', 6379, charset="utf-8", decode_responses=True)
+			# print(data)
+			import json
+			lpn = data['license']
+			ttl =3600
+			db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
+			db.expire(lpn, ttl) #expire in hour
+			db.publish(self.printer.lower(),lpn)
+		except :
+			print ('Print successful!!')
+			return True
 
-		only_filename = os.path.split(self.filename)[1]
-		head,tail = os.path.splitext(self.filename)
-		eir_obj = eir(self.filename,self.printer)
-		data = eir_obj.getInfo()
-		self.json = data
-		print(data)
-
-		db = redis.StrictRedis('192.168.10.102', 6379, charset="utf-8", decode_responses=True)
-		# print(data)
-		import json
-		lpn = data['license']
-		ttl =3600
-		db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
-		db.expire(lpn, ttl) #expire in hour
-		db.publish(self.printer.lower(),lpn)
 
 # Comment by Chutchai on Aug 13,2020
 # To send json data to N4 print service
@@ -92,7 +95,7 @@ class eir_print:
 
 		# win32print.SetDefaultPrinter(default_printer) #set default back to original
 
-		print ('Print successful!!')
-		return True
+		# print ('Print successful!!')
+		# return True
 
 
