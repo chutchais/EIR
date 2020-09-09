@@ -97,12 +97,15 @@ class eir:
 				# get Vessel Name,Move, date
 				if ix == line_offset+7:
 					print ('IX %s :%s' %(ix,line_data))
-
+					date=''
+					# Added Sep 9,2020 -- To support in case transaction on 00 to 01 am
+					
 					if len(line_data) == 4 :
 						# Barge BMT
 						vessel_name = ''
 						move = line_data[0].strip()
 						imo2 = ''
+						date = line_data[len(line_data)-1].strip()
 					else :
 						move = line_data[5].strip()
 						if move =='':
@@ -131,7 +134,15 @@ class eir:
 								move = line_data[2].strip()#1 DG
 
 
-					date = line_data[len(line_data)-1].strip()
+						date = line_data[len(line_data)-1].strip()
+
+					if len(line_data) == 7 :
+						print('After midnight')
+						vessel_name= line_data[0].strip()
+						move = line_data[2].strip()
+						imo2=''
+						date = '%s %s' % (line_data[len(line_data)-2].strip(),line_data[len(line_data)-1].strip())
+
 					# print(vessel_name,move,date)
 				# Type ,ISO ,POD
 				# Added on Sep 9,2020 -- To assign default value of pod,type_text and iso
