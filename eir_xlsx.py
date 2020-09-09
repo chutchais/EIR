@@ -31,6 +31,7 @@ class eir_print:
 			data = eir_obj.getInfo()
 			self.json = data
 			print(data)
+			# db = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
 			db = redis.StrictRedis('192.168.10.102', 6379, charset="utf-8", decode_responses=True)
 			# print(data)
 			import json

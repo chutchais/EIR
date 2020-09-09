@@ -43,15 +43,21 @@ class eir:
 			line_offset = 0
 
 			for ix,l in enumerate(x):
+				print(ix)
 				line_data = l.split('    ')
 
-				if ix ==  2:
-					if len(line_data[0].strip()) == 0 :
-						line_offset = 2
+				# if ix ==  2:#if ix ==  2:
+				# 	print('Line of Company:',line_data)
+				# 	if len(line_data[0].strip()) == 0 :
+				# 		line_offset = 2
+
 				# get Company info
 				if ix == line_offset+2:
 					print (line_data)
 					company = line_data[0].strip()
+					if company=='':
+						print('Not found Company line')
+						line_offset=line_offset-1
 					# print (company)
 				# get Date,Line,Container
 				if ix == line_offset+4:
@@ -128,7 +134,13 @@ class eir:
 					date = line_data[len(line_data)-1].strip()
 					# print(vessel_name,move,date)
 				# Type ,ISO ,POD
+				# Added on Sep 9,2020 -- To assign default value of pod,type_text and iso
+				# To fix Flat lack problem.
+				
 				if ix == line_offset+9:
+					pod=''
+					type_text=''
+					iso=''
 					print(line_data)
 					temperature=''
 					if len(line_data) == 10: #Reefer
@@ -141,6 +153,14 @@ class eir:
 						type_text = line_data[0].strip()
 						iso = line_data[3].strip()
 						pod = line_data[7].strip()
+					
+					# Added on Sep 9,2020 -- To support Flat rack
+					print('Line data:',len(line_data))
+					if len(line_data) == 4: #Flat rack
+						type_text = line_data[0].strip()
+						iso = line_data[len(line_data)-1].strip()
+						print(type_text,iso)
+						# pod = line_data[7].strip()
 
 					# print (type_text,iso,pod)
 
@@ -170,6 +190,8 @@ class eir:
 					print(line_data)
 					seal2 = line_data[0].strip()
 
+				#Added on Sep 9,2020 -- TO add Remark
+
 				# Damage, remark
 				if ix == line_offset+17:
 					print (line_data)
@@ -180,6 +202,7 @@ class eir:
 					if len(line_data) == 8: #Dry
 						damage = line_data[0].strip()
 						remark = line_data[7].strip()
+					print(remark)
 
 				if ix == line_offset+18:
 					print (line_data)
@@ -230,13 +253,15 @@ class eir:
 					"seal2":seal2,
 					"gross_weight":gross_weight,
 					"damage":damage,
-					"booking":booking
+					"booking":booking,
+					"remark":remark, #Added on Sep 9,2020 -- Add remark
+					"remark2":remark2 #Added on Sep 9,2020 -- Add remark
 					}
 				]
 			}
 			return data
-		except :
-			print ('Error on getInfo function')
+		except Exception as e :
+			print ('Error on getInfo function',e)
 
 # N4 print format
 # { "company": "OTHER", "company_code": "OTHER", 
