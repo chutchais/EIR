@@ -212,7 +212,13 @@ class eir:
 						remark = line_data[0].strip()
 					if len(line_data) == 8: #Dry
 						damage = line_data[0].strip()
-						remark = line_data[7].strip()
+						remark = line_data[len(line_data)-1].strip()
+					
+					# Add on Sep 10,2020 -- To fill damage
+					if len(line_data) > 1: #With Damage
+						damage = line_data[0].strip()
+					remark = line_data[len(line_data)-1].strip()
+					
 					print(remark)
 
 				if ix == line_offset+18:
