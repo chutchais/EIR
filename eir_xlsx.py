@@ -40,7 +40,8 @@ class eir_print:
 			lpn = '%s-%s' % (lpn,self.container_index) if self.container_index != 0 else lpn
 			print ('LPN = %s' % lpn)
 
-			ttl =3600
+			# ttl =3600 #1hour
+			ttl = 60*5 #5mins Change on Sep 11,2020 -- To decrease ttl of key
 			db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
 			db.expire(lpn, ttl) #expire in hour
 			db.publish(self.printer.lower(),lpn)

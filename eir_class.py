@@ -117,12 +117,20 @@ class eir:
 						date = line_data[len(line_data)-1].strip()
 					else :
 						move = line_data[5].strip()
-						if move =='':
+						# Comment on Oct 5,2020 -- To fix wrong Move info
+						# if move =='':
+						# 	move = line_data[4].strip()
+						# if move =='':
+						# 	move = line_data[3].strip()
+						# if move =='':
+						# 	move = line_data[2].strip()
+						if not ('IN' in move or 'OUT' in move) :
 							move = line_data[4].strip()
-						if move =='':
+						if not ('IN' in move or 'OUT' in move) :
 							move = line_data[3].strip()
-						if move =='':
+						if not ('IN' in move or 'OUT' in move) :
 							move = line_data[2].strip()
+
 						vessel_name= line_data[0].strip()
 						imo2=''
 						if len(vessel_name.split('/'))>1:
