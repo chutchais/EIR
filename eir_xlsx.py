@@ -46,7 +46,8 @@ class eir_print:
 			db.expire(lpn, ttl) #expire in hour
 			db.publish(self.printer.lower(),lpn)
 			print ('Print successful!!')
-			return True
+			# return True
+			return data['license'] #Modify on Oct 6,2020 -- To return actual LPN
 		except :
 			print ('Error on Print')
 			

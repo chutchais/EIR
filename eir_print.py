@@ -31,7 +31,7 @@ import platform
 
 # from colorama import init
 # from colorama import Fore, Back, Style
-
+from eir_class import eir
 
 
 
@@ -142,6 +142,8 @@ an optional message """
 # url = 'http://127.0.0.1:8000' #Develop 
 url = 'http://192.168.10.20:8001' #Production
 paper_count = 0 
+previous_lpn = ''
+container_index = 0
 
 class readable_dir(argparse.Action):
 	def __call__(self,parser, namespace, values, option_string=None):
@@ -245,27 +247,49 @@ def makeDirectory():
 # 		f.write(traceback.format_exc())
 # 		print(traceback.format_exc())
 
+
+previous_lpn =''
+
 def main():
 	while True:
+
 		print_eir()
-		sleep(1)
+		sleep(2)#Change waitting time from 1 sec to 2 sec on Oct 6,2020
 
 def print_eir():
 	try:
 		global paper_count
+		global previous_lpn
+		global container_index
 		file_index = 0
-		for i in range(0,4):
+		for i in range(0,1):
 			eirs = glob.glob(working_dir + '\\*.*')
 			# total_files = len(eirs)-1 #Add on Sep 8,2020 -- to support cycle container
 			if len(eirs)>0:
-				for eir in eirs:
+				for eirfile in eirs:
 					target_dir =makeDirectory()
 					# filename=  eirs[0]
-					filename =  eir
+					filename =  eirfile
+
+					# Added on Oct 6,2020 -- To fix not complete print EIR in case 2x20" containers.
+					# Check Current LPN before print
+					eir_obj = eir(filename,pc_name)
+					data = eir_obj.getInfo()
+					current_lpn = data['license']
+					print(f'Current LPN: {current_lpn} Previous LPN: {previous_lpn}')
+					# previous_lpn
+					if current_lpn == previous_lpn :
+						# Same LPN
+						container_index = container_index+1
+					else :
+						# Incase different lpn
+						container_index = 0
+
+
 					# head, tail = os.path.split(eirs[0])
-					head, tail = os.path.split(eir)
+					head, tail = os.path.split(eirfile)
 					print ('Found EIR file : %s ' % filename)
-					x = eir_print(filename,"",target_dir[0],setting_data,pc_name,file_index)
+					x = eir_print(filename,"",target_dir[0],setting_data,pc_name,container_index)
 					file_index = file_index+1
 
 				# 	# Capture Image and do Face Detection
@@ -278,12 +302,13 @@ def print_eir():
 				# 	# Once face captured then Print EIR
 				# 	# ask_eir()
 					result = x.print()
-					# print(result)
+					print(f'Previous LPN: {result}')
+					previous_lpn = result
 				# 	# ask_eir()
 				# 	# Move file to output folder 
 					target_file = target_dir[0] +'\\' + tail
-					shutil.move(eir,target_file )
-					sleep(1)
+					shutil.move(eirfile,target_file )
+					sleep(2)#Change waitting time from 1 sec to 2 sec on Oct 6,2020
 
 
 
@@ -316,10 +341,10 @@ def print_eir():
 				break
 			else:
 				print ('Not found EIR file : %s' % datetime.now() )
-	except :
-		pass
+	except Exception as e :
+		print(f'Error on process data : {e}')
 	
-	sleep(0.5)
+	sleep(1)
 
 
 
@@ -357,6 +382,7 @@ if __name__ == "__main__":
 	print ('Printing Service : %s' % print_server)
 	print ('Working Directory : %s' % args.input_directory)
 	print ('PC Name : %s' % pc_name)
+	print ('Version : 1.0.0')
 	# print ('COM port : %s' % args.com_port)
 	print ('********************************************************************')
 
@@ -455,5 +481,6 @@ def upload_image(service,container_number,container_slug,image1,image2):
 	except:
 		print ('Error on upload_image function')
 		return ""
+
 
 main()
