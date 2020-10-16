@@ -161,6 +161,10 @@ class eir:
 						imo2=''
 						date = '%s %s' % (line_data[len(line_data)-2].strip(),line_data[len(line_data)-1].strip())
 
+					# Added on Oct 16,2020 Version 1.0.1-- To improve to find move in Line data.
+					for item in line_data:
+						if ('/IN' in item) or ('/OUT' in item) or ('FULL/' in item) or ('EMPTY/' in item) :
+							move = item.strip()
 					
 					# print(vessel_name,move,date)
 				# Type ,ISO ,POD
