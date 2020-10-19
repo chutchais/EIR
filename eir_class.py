@@ -264,6 +264,11 @@ class eir:
 			else :
 				company = 'B1'
 
+			# Added by Chutchai on Oct 19,2020 -- To replace 'Out of service' to 'Damage'
+			# On version 1.0.2
+			if damage == 'Out of service':
+				damage = 'Damage'
+				
 			data = {
 				"company": truck_company,
 				"document":"EIR",
