@@ -382,7 +382,7 @@ if __name__ == "__main__":
 	print ('Printing Service : %s' % print_server)
 	print ('Working Directory : %s' % args.input_directory)
 	print ('PC Name : %s' % pc_name)
-	print ('Version : 1.0.2')
+	print ('Version : 1.0.3')
 	# print ('COM port : %s' % args.com_port)
 	print ('********************************************************************')
 

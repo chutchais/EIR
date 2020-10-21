@@ -37,7 +37,8 @@ class eir:
 
 	def getInfo(self):
 		try:
-			with open(self.filename) as file:
+			# Modify on Oct 21,2020 -- Fix fix error when file containes alian charecter (add errors='ignore')
+			with open(self.filename, errors='ignore') as file:
 				x = [l.strip() for l in file]
 
 			line_offset = 0
