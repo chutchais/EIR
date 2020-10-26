@@ -275,6 +275,19 @@ def print_eir():
 					# Check Current LPN before print
 					eir_obj = eir(filename,pc_name)
 					data = eir_obj.getInfo()
+
+					# Added on Oct 26,2020 -- To verify file format is validated.
+					if len(data) == 0:
+						# Delete file.
+						print(f'EIR file is incorrect format : {filename}')
+						# 	# Move file to output folder 
+						head, tail = os.path.split(filename)
+						# print(head, tail)
+						target_file = target_dir[1] +'\\' + tail
+						# print(target_file)
+						shutil.move(filename,target_file )
+						break
+
 					current_lpn = data['license']
 					print(f'Current LPN: {current_lpn} Previous LPN: {previous_lpn}')
 					# previous_lpn
@@ -301,7 +314,7 @@ def print_eir():
 
 				# 	# Once face captured then Print EIR
 				# 	# ask_eir()
-					result = x.print()
+					success,result = x.print()
 					print(f'Previous LPN: {result}')
 					previous_lpn = result
 				# 	# ask_eir()
@@ -382,7 +395,8 @@ if __name__ == "__main__":
 	print ('Printing Service : %s' % print_server)
 	print ('Working Directory : %s' % args.input_directory)
 	print ('PC Name : %s' % pc_name)
-	print ('Version : 1.0.3')
+	print ('Version : 1.0.4')
+	print ('Change logs : Improve to delete wrong EIR file format')
 	# print ('COM port : %s' % args.com_port)
 	print ('********************************************************************')
 

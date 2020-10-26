@@ -28,28 +28,35 @@ class eir_print:
 			only_filename = os.path.split(self.filename)[1]
 			head,tail = os.path.splitext(self.filename)
 			eir_obj = eir(self.filename,self.printer)
+			print('Get EIR information')
 			data = eir_obj.getInfo()
 			self.json = data
 			print(data)
-			# db = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
-			db = redis.StrictRedis('192.168.10.102', 6379, charset="utf-8", decode_responses=True)
-			# print(data)
-			import json
-			lpn = data['license']
+			if len(data)>0 : #Added on Oct 26,2020 -- To verify data
+				# db = redis.StrictRedis('localhost', 6379, charset="utf-8", decode_responses=True)
+				db = redis.StrictRedis('192.168.10.102', 6379, charset="utf-8", decode_responses=True)
+				import json
+				lpn = data['license']
 
-			lpn = '%s-%s' % (lpn,self.container_index) if self.container_index != 0 else lpn
-			print ('LPN = %s' % lpn)
+				lpn = '%s-%s' % (lpn,self.container_index) if self.container_index != 0 else lpn
+				print ('LPN = %s' % lpn)
 
-			# ttl =3600 #1hour
-			ttl = 60*5 #5mins Change on Sep 11,2020 -- To decrease ttl of key
-			db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
-			db.expire(lpn, ttl) #expire in hour
-			db.publish(self.printer.lower(),lpn)
-			print ('Print successful!!')
-			# return True
-			return data['license'] #Modify on Oct 6,2020 -- To return actual LPN
+				# ttl =3600 #1hour
+				ttl = 60*5 #5mins Change on Sep 11,2020 -- To decrease ttl of key
+				db.set(lpn,json.dumps(data) ) #store dict in a hashjson.dumps(json_data)
+				db.expire(lpn, ttl) #expire in hour
+				db.publish(self.printer.lower(),lpn)
+				print ('Print successful!!')
+				# return True
+				return True,data['license'] #Modify on Oct 6,2020 -- To return actual LPN
+			else:
+				print ('Print Error -- Not found data')
+				return False,''
+
 		except :
-			print ('Error on Print')
+			print ('Print Error')
+			# Added on Oct 26,2020 -- To return Blank if file is incorrect
+			return False,''
 			
 
 

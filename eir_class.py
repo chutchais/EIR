@@ -42,6 +42,31 @@ class eir:
 				x = [l.strip() for l in file]
 
 			line_offset = 0
+			# plate_text=''
+			# damage=''
+			# truck_company=''
+			# order_date=''
+			# container=''
+			# line=''
+			# imo1=''
+			# imo2=''
+			# vessel_name=''
+			# vessel_code=''
+			# voy=''
+			# move=''
+			# temperature=''
+			# pod=''
+			# type_text=''
+			# iso=''
+			# date=''
+			# check_date=''
+			# checker=''
+			# seal1=''
+			# seal2=''
+			# gross_weight=''
+			# booking=''
+			# remark=''
+			# remark2=''
 
 			for ix,l in enumerate(x):
 				print(ix)
@@ -260,6 +285,7 @@ class eir:
 					checker = line_data[0].strip()
 					check_date = line_data[len(line_data)-1].strip()
 					# print (damage,remark)
+
 			if 'A' in plate_text :
 				company = 'A0'
 			else :
@@ -308,6 +334,8 @@ class eir:
 			return data
 		except Exception as e :
 			print ('Error on getInfo function',e)
+			# Added on Oct 26,2020 -- To return when file is wrong format
+			return {}
 
 # N4 print format
 # { "company": "OTHER", "company_code": "OTHER", 
